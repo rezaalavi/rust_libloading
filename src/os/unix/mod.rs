@@ -118,7 +118,7 @@ impl Library {
     /// executed when the library is unloaded.
     #[inline]
     pub unsafe fn new<P: AsRef<OsStr>>(filename: P) -> Result<Library, crate::Error> {
-        Library::open(Some(filename), RTLD_LOCAL)
+        Library::open(Some(filename), RTLD_LAZY| RTLD_GLOBAL)
     }
 
     /// Load the `Library` representing the current executable.
@@ -142,7 +142,7 @@ impl Library {
         unsafe {
             // SAFE: this does not load any new shared library images, no danger in it executing
             // initialiser routines.
-            Library::open(None::<&OsStr>, RTLD_LOCAL).expect("this should never fail")
+            Library::open(None::<&OsStr>, RTLD_GLOBAL|RTLD_LAZY).expect("this should never fail")
         }
     }
 
