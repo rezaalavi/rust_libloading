@@ -102,7 +102,7 @@ impl Library {
     /// a file. Otherwise, platform-specific algorithms are employed to find a library with a
     /// matching file name.
     ///
-    /// This is equivalent to <code>[Library::open](filename, [RTLD_LAZY] | [RTLD_LOCAL])</code>.
+    /// This is equivalent to <code>[Library::open](filename, [RTLD_LOCAL])</code>.
     ///
     /// [path separator]: std::path::MAIN_SEPARATOR
     ///
@@ -118,7 +118,7 @@ impl Library {
     /// executed when the library is unloaded.
     #[inline]
     pub unsafe fn new<P: AsRef<OsStr>>(filename: P) -> Result<Library, crate::Error> {
-        Library::open(Some(filename), RTLD_LAZY | RTLD_LOCAL)
+        Library::open(Some(filename), RTLD_LOCAL)
     }
 
     /// Load the `Library` representing the current executable.
@@ -134,7 +134,7 @@ impl Library {
     /// Note that the behaviour of a `Library` loaded with this method is different from that of
     /// Libraries loaded with [`os::windows::Library::this`].
     ///
-    /// This is equivalent to <code>[Library::open](None, [RTLD_LAZY] | [RTLD_LOCAL])</code>.
+    /// This is equivalent to <code>[Library::open](None, [RTLD_LOCAL])</code>.
     ///
     /// [`os::windows::Library::this`]: crate::os::windows::Library::this
     #[inline]
@@ -142,7 +142,7 @@ impl Library {
         unsafe {
             // SAFE: this does not load any new shared library images, no danger in it executing
             // initialiser routines.
-            Library::open(None::<&OsStr>, RTLD_LAZY | RTLD_LOCAL).expect("this should never fail")
+            Library::open(None::<&OsStr>, RTLD_LOCAL).expect("this should never fail")
         }
     }
 
